@@ -34,12 +34,15 @@ public class Player : MonoBehaviour
 }
 */
 
+
 public class Player : MonoBehaviour
 {
     public float moveSpeed = 1f;
     public float jumpForce = 5f;
     private Rigidbody rb;
     private bool isGrounded;
+
+    public GameOverManager gameOverManager; // Referência ao GameOverManager
 
     void Start()
     {
@@ -56,14 +59,15 @@ public class Player : MonoBehaviour
             case "move left":
                 transform.Translate(Vector3.left * moveSpeed * 10f * Time.deltaTime);
                 break;
-            case "move rigth":
+            case "move right":
                 transform.Translate(Vector3.right * moveSpeed * 10f * Time.deltaTime);
                 break;
             case "jump":
                 if (isGrounded)
                 {
-                    rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                    rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);         
                 }
+                
                 break;
             case "attack":
                 Debug.Log("Sapo atacou!");
@@ -80,7 +84,14 @@ public class Player : MonoBehaviour
         {
             isGrounded = true;
         }
+        else if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Debug.Log("Sapo bateu em um obstáculo!");
+            GetComponent<Collider>().enabled = false; // Desativa o Collider do Player
+            gameOverManager.ShowGameOver(); // Exibe o painel de Game Over
+        }
     }
+
 
     void OnCollisionExit(Collision collision)
     {

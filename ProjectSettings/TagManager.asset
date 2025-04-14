@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PerigoTag
   - Ground
+  - Obstacle
   layers:
   - Default
   - TransparentFX
