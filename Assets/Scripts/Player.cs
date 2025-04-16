@@ -2,47 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
 public class Player : MonoBehaviour
+
 {
-    public float forceMultiplier = 3f;
-    public float maximumVelocity = 3f;
-
-    void Start()
-    {
-        
-    }
-    void Update()
-    {
-        var horizontalInput = Input.GetAxis("Horizontal");
-
-        if (GetComponent<Rigidbody>().velocity.magnitude <= maximumVelocity)
-        {
-            GetComponent<Rigidbody>().AddForce(new Vector3(horizontalInput * forceMultiplier, 0, 0));
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("PerigoTag"))
-        {
-            Destroy(gameObject);
-        }
-    }
-
-
-}
-*/
-
-
-public class Player : MonoBehaviour
-{
-    public float moveSpeed = 1f;
+    public float moveSpeed = 3f;
     public float jumpForce = 5f;
     private Rigidbody rb;
     private bool isGrounded;
-
-    public GameOverManager gameOverManager; // Referência ao GameOverManager
 
     void Start()
     {
@@ -53,21 +19,17 @@ public class Player : MonoBehaviour
     {
         switch (command.ToLower())
         {
-            case "move forward":
-                transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-                break;
             case "move left":
-                transform.Translate(Vector3.left * moveSpeed * 10f * Time.deltaTime);
+                transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
                 break;
             case "move right":
-                transform.Translate(Vector3.right * moveSpeed * 10f * Time.deltaTime);
+                transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
                 break;
             case "jump":
                 if (isGrounded)
                 {
-                    rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);         
+                    rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 }
-                
                 break;
             case "attack":
                 Debug.Log("Sapo atacou!");
@@ -84,14 +46,7 @@ public class Player : MonoBehaviour
         {
             isGrounded = true;
         }
-        else if (collision.gameObject.CompareTag("Obstacle"))
-        {
-            Debug.Log("Sapo bateu em um obstáculo!");
-            GetComponent<Collider>().enabled = false; // Desativa o Collider do Player
-            gameOverManager.ShowGameOver(); // Exibe o painel de Game Over
-        }
     }
-
 
     void OnCollisionExit(Collision collision)
     {
