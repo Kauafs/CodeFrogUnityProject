@@ -1,58 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
-
 {
     public float moveSpeed = 3f;
     public float jumpForce = 5f;
     private Rigidbody rb;
-    private bool isGrounded;
+    private bool canMove = false;
+    public int score = 0; // Pontuação inicial
 
     void Start()
     {
+        Debug.Log("Score inicial: " + score);
         rb = GetComponent<Rigidbody>();
     }
 
-    public void ExecuteCommand(string command)
+    void Update()
     {
-        switch (command.ToLower())
+        if (canMove)
         {
-            case "move left":
-                transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
-                break;
-            case "move right":
-                transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-                break;
-            case "jump":
-                if (isGrounded)
-                {
-                    rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                }
-                break;
-            case "attack":
-                Debug.Log("Sapo atacou!");
-                break;
-            default:
-                Debug.Log("Comando inválido!");
-                break;
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
+
+            transform.Translate(new Vector3(moveHorizontal, 0, moveVertical) * moveSpeed * Time.deltaTime);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    public void UnlockMovement()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
+        canMove = true;
     }
 
-    void OnCollisionExit(Collision collision)
+    public void AddScore(int amount)
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
-        }
+        score += amount;
+        Debug.Log("Pontuação: " + score);
+    }
+
+    public void LosePoints(int amount)
+    {
+        score -= amount;
+        Debug.Log("Pontuação: " + score);
     }
 }
