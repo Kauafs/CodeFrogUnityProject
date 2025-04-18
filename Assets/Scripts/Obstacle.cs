@@ -14,7 +14,7 @@ public class Obstacle : MonoBehaviour
         // Quando o obstáculo tocar o chão, ele para de cair
         if (collision.gameObject.CompareTag("Ground"))
         {
-            Debug.Log("Obstáculo tocou o chão!");
+            
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY; // Fixa no chão
         }
     }

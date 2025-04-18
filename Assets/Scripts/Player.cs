@@ -1,17 +1,19 @@
-using UnityEngine;
+ï»¿using UnityEngine;
+using TMPro;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
     public float moveSpeed = 3f;
-    public float jumpForce = 5f;
+    public float jumpForce = 5f; // ForÃ§a do pulo
     private Rigidbody rb;
     private bool canMove = false;
-    public int score = 0; // Pontuação inicial
+    public TextMeshProUGUI timerText;
 
     void Start()
     {
-        Debug.Log("Score inicial: " + score);
         rb = GetComponent<Rigidbody>();
+        timerText.text = "";
     }
 
     void Update()
@@ -23,27 +25,30 @@ public class Player : MonoBehaviour
 
             transform.Translate(new Vector3(moveHorizontal, 0, moveVertical) * moveSpeed * Time.deltaTime);
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            // CÃ³digo de Pulo
+            if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(rb.velocity.y) < 0.01f) // SÃ³ permite pular se estiver no chÃ£o
             {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
         }
     }
 
-    public void UnlockMovement()
+    public void UnlockMovement(float duration)
     {
         canMove = true;
+        StartCoroutine(AllowMovementForTime(duration));
     }
 
-    public void AddScore(int amount)
+    private IEnumerator AllowMovementForTime(float duration)
     {
-        score += amount;
-        Debug.Log("Pontuação: " + score);
-    }
+        while (duration > 0)
+        {
+            timerText.text = "Tempo restante: " + duration.ToString("F1") + "s";
+            yield return new WaitForSeconds(1f);
+            duration--;
+        }
 
-    public void LosePoints(int amount)
-    {
-        score -= amount;
-        Debug.Log("Pontuação: " + score);
+        timerText.text = "";
+        canMove = false;
     }
 }
