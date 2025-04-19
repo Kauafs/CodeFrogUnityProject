@@ -23,10 +23,15 @@ public class Player : MonoBehaviour
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
 
-            transform.Translate(new Vector3(moveHorizontal, 0, moveVertical) * moveSpeed * Time.deltaTime);
+            // Debug para verificar os inputs
+            Debug.Log($"Horizontal: {moveHorizontal}, Vertical: {moveVertical}");
+
+            // Movimentação corrigida para respeitar a rotação Y=90° do sapo
+            Vector3 moveDirection = transform.right * -moveVertical + transform.forward * moveHorizontal;
+            rb.MovePosition(rb.position + moveDirection.normalized * moveSpeed * Time.deltaTime);
 
             // Código de Pulo
-            if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(rb.velocity.y) < 0.01f) // Só permite pular se estiver no chão
+            if (Input.GetKeyDown(KeyCode.Space) && Mathf.Abs(rb.velocity.y) < 0.01f)
             {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
