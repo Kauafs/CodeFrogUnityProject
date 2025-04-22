@@ -19,6 +19,7 @@ public class ProgrammingQuiz : MonoBehaviour
 
     private string[][] questions = new string[][]
     {
+        new string[] { "Como declarar uma variável inteira chamada score?", "int score;" },
         new string[] { "Qual comando imprime um texto na tela em C#?", "Console.WriteLine(\"Hello World\");" },
         new string[] { "Como declarar uma variável inteira chamada score?", "int score;" },
         new string[] { "Corrija o erro: if (x = 5)", "if (x == 5)" }
