@@ -32,6 +32,17 @@ public class ProgrammingQuiz : MonoBehaviour
 
         LoadNextQuestion();
         UpdateUI();
+
+        // Adicionar evento para detectar "Enter" no InputField
+        answerInput.onSubmit.AddListener(delegate { CheckAnswer(); });
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return)) // Detecta tecla Enter pressionada
+        {
+            answerInput.ActivateInputField(); // Habilita o campo de texto para digitação
+        }
     }
 
     public void CheckAnswer()
@@ -39,7 +50,7 @@ public class ProgrammingQuiz : MonoBehaviour
         if (answerInput.text.Trim().ToLower() == questions[currentQuestionIndex][1].ToLower())
         {
             feedbackText.text = "Correto! Você pode se mover!";
-            player.UnlockMovement(5f);
+            player.UnlockMovement(60f);
 
             score += 10;
             correctAnswers++;
@@ -49,14 +60,13 @@ public class ProgrammingQuiz : MonoBehaviour
         else
         {
             feedbackText.text = "Errado! Obstáculo criado!";
-            score = Mathf.Max(score - 10, 0); // Reduzindo pontos ao errar, sem deixar negativos
+            score = Mathf.Max(score - 10, 0); // Reduz pontos ao errar, sem deixar negativos
             CreateExtraObstacle();
         }
 
         UpdateUI();
         answerInput.text = "";
     }
-
 
     void LoadNextQuestion()
     {

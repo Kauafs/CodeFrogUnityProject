@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
     private bool canMove = false;
     public TextMeshProUGUI timerText;
 
+    [SerializeField]
+    private Transform cameraTransform;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -43,7 +46,7 @@ public class Player : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
 
         Vector3 moveDirection = new Vector3(moveHorizontal, 0, moveVertical);
-        moveDirection = Camera.main.transform.TransformDirection(moveDirection);
+        moveDirection = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y,Vector3.up) * moveDirection;
         moveDirection.y = 0;
 
         if (moveDirection.magnitude > 0.1f)
@@ -96,4 +99,17 @@ public class Player : MonoBehaviour
         canMove = false;
         animator.SetBool("Mover", false); // 🔹 Garantindo que a animação para quando o tempo acabar
     }
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
+
 }
