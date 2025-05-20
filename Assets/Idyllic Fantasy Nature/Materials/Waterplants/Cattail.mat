@@ -21,20 +21,23 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Cattail
-  m_Shader: {fileID: -6465566751694194690, guid: 3230f6c5d09dd114c82b2287fcc7e15b, type: 3}
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _COLOR_OVERLAY_VERTEX_POSITION
-  - _SPECULAR_SETUP
+  - _GLOSSYREFLECTIONS_OFF
   m_InvalidKeywords:
+  - _COLOR_OVERLAY_VERTEX_POSITION
   - _OVERLAY_VERTEX_POSITION
+  - _SPECULAR_SETUP
   - _WIND_OVERLAY_VERTEX_POSITION
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -83,7 +86,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 9341cd24532a143429e0743f2de77588, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -162,6 +165,7 @@ Material:
     - _GlossyReflections: 0
     - _Level: 0
     - _Metallic: 0
+    - _Mode: 0
     - _Noise_Scale: 0
     - _Normal_Strength: 0
     - _OVERLAY: 0
@@ -178,6 +182,7 @@ Material:
     - _Start_Bend_Range: 0.4
     - _Start_to_bend_range: 1
     - _Surface: 0
+    - _UVSec: 0
     - _WIND_OVERLAY: 0
     - _Wave_Scale: 0.5
     - _Wind_Direction: 0

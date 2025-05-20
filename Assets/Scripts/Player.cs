@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
-    public float moveSpeed = 3f;
+    public float moveSpeed = 5f;
     public float jumpForce = 5f;
     private CharacterController controller;
     private Vector3 velocity;
