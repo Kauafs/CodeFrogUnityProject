@@ -4,11 +4,8 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float jumpForce = 5f;
     private CharacterController controller;
     private Vector3 velocity;
-    private bool isGrounded;
     private Animator animator;
     private bool canMove = false;
     public TextMeshProUGUI timerText;
@@ -21,22 +18,15 @@ public class Player : MonoBehaviour
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         timerText.text = "";
-
-        // 🔹 Garantindo que o sapo começa no chão
         transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
-
-        // 🔹 Garantindo que a animação começa em Idle
         animator.SetBool("Mover", false);
-
-        // 🔹 Aplicando gravidade desde o início
-        velocity.y = -2f;
+        velocity.y = -2f; // 🔹 Gravidade inicial
     }
 
     void Update()
     {
         if (!canMove)
         {
-            // 🔹 Impede movimentação e mantém animação parada
             animator.SetBool("Mover", false);
             controller.Move(Vector3.zero);
             return;
@@ -46,36 +36,33 @@ public class Player : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
 
         Vector3 moveDirection = new Vector3(moveHorizontal, 0, moveVertical);
-        moveDirection = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y,Vector3.up) * moveDirection;
+        moveDirection = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * moveDirection;
         moveDirection.y = 0;
+
+        float speed = Input.GetKey(KeyCode.LeftShift) ? 6f : 3f; // 🔹 Alterna corrida e caminhada direto
 
         if (moveDirection.magnitude > 0.1f)
         {
-            transform.forward = moveDirection; // 🔹 Corrigindo rotação do sapo
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection), Time.deltaTime * 10f);
         }
 
-        controller.Move(moveDirection * Time.deltaTime * moveSpeed);
+        controller.Move(moveDirection * Time.deltaTime * speed);
 
-        // 🔹 Atualizando animação corretamente
         animator.SetBool("Mover", moveDirection.magnitude > 0.1f);
 
-        // Gravidade aplicada continuamente
+        // 🔹 Aplicando gravidade corretamente
         velocity.y += Physics.gravity.y * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        // Pulo
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded) // 🔹 Agora verifica diretamente no "CharacterController"
         {
-            velocity.y = jumpForce;
+            velocity.y = Mathf.Sqrt(2 * -Physics.gravity.y * 1.5f); // 🔹 Pulo baseado na gravidade
             animator.SetTrigger("Jump");
         }
-
-        isGrounded = controller.isGrounded;
     }
 
     void FixedUpdate()
     {
-        // 🔹 Aplicando gravidade continuamente
         velocity.y += Physics.gravity.y * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
@@ -97,19 +84,11 @@ public class Player : MonoBehaviour
 
         timerText.text = "";
         canMove = false;
-        animator.SetBool("Mover", false); // 🔹 Garantindo que a animação para quando o tempo acabar
+        animator.SetBool("Mover", false);
     }
 
     private void OnApplicationFocus(bool focus)
     {
-        if (focus)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-        }
+        Cursor.lockState = focus ? CursorLockMode.Locked : CursorLockMode.None;
     }
-
 }
