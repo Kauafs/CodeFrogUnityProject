@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
         moveDirection = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * moveDirection;
         moveDirection.y = 0;
 
-        float speed = Input.GetKey(KeyCode.LeftShift) ? 6f : 3f; // 🔹 Alterna corrida e caminhada direto
+        float speed = Input.GetKey(KeyCode.LeftShift) ? 6f : 3f; 
 
         if (moveDirection.magnitude > 0.1f)
         {
@@ -54,10 +54,9 @@ public class Player : MonoBehaviour
         velocity.y += Physics.gravity.y * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded) // 🔹 Agora verifica diretamente no "CharacterController"
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded) 
         {
-            velocity.y = Mathf.Sqrt(2 * -Physics.gravity.y * 1.5f); // 🔹 Pulo baseado na gravidade
-            animator.SetTrigger("Jump");
+            velocity.y = Mathf.Sqrt(2 * -Physics.gravity.y * 1.5f); 
         }
     }
 

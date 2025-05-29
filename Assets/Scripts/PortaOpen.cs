@@ -4,16 +4,16 @@ public class PortaOpen : MonoBehaviour
 {
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // Se o jogador passar pela porta
+        if (other.CompareTag("Player")) 
         {
             ZeroDayBoss boss = FindObjectOfType<ZeroDayBoss>();
             if (boss != null)
             {
-                boss.AtivarPerseguicao(); // Ativa a perseguição do chefe
+                boss.AtivarPerseguicao(); 
             }
 
             Debug.Log("Porta atravessada! Perseguição ativada.");
-            Destroy(gameObject); // Remove a porta após ativação
+            Destroy(gameObject); 
         }
     }
 }
